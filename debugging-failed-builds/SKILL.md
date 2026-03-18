@@ -27,16 +27,20 @@ bk build list -p org/pipeline --branch my-branch --limit 1 -o json | jq '.[0].jo
 
 ### 3. Read Job Logs
 
-For each failed job, fetch the log and look for errors:
+For each failed job, download the log to a file (if it's not already there) and look for errors:
 
 ```bash
-bk job log <job-id> -p org/pipeline -b <build-number> --no-timestamps | tail -n 200
+[ -f /tmp/<pipeline>-<build-number>-<job-id>.log ] || bk job log <job-id> -p org/pipeline -b <build-number> --no-timestamps > /tmp/<pipeline>-<build-number>-<job-id>.log
+
+tail -n 200 /tmp/<pipeline>-<build-number>-<job-id>.log 
 ```
 
 ### 4. Search for Errors
 
 ```bash
-bk job log <job-id> -p org/pipeline -b <build-number> --no-timestamps | grep -i error -C 3
+[ -f /tmp/<pipeline>-<build-number>-<job-id>.log ] || bk job log <job-id> -p org/pipeline -b <build-number> --no-timestamps > /tmp/<pipeline>-<build-number>-<job-id>.log
+
+grep -i error -C 3 /tmp/<pipeline>-<build-number>-<job-id>.log
 ```
 
 ### 5. Check for Test Failures
