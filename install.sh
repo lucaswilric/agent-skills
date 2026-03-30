@@ -25,6 +25,8 @@ SKILL_DIRS=(
   writing-linear-issues
   writing-linear-project-updates
   writing-prds
+  using-dash
+  processing-zoom-recordings
 )
 
 RED='\033[0;31m'
